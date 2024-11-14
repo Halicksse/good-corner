@@ -19,7 +19,7 @@ const AdDetailsPage = () => {
       <h2 className="ad-details-title">{adDetails?.title}</h2>
       <section className="ad-details">
         <div className="ad-details-image-container">
-          <img className="ad-details-image" src={adDetails?.picture} alt=""/>
+          <img className="ad-details-image" src={adDetails?.picture} />
         </div>
         <div className="ad-details-info">
           <div className="ad-details-price">{adDetails?.price} €</div>
