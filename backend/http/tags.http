@@ -1,20 +1,24 @@
+###
 GET http://localhost:3000/tags
 
 ###
+GET http://localhost:3000/tags?name=J
+
+###
 POST http://localhost:3000/tags
-Content-Type: application/json
+Content-type: application/json
+
+  {
+    "name": "Promo"
+  }
+
+###
+PUT http://localhost:3000/tags/4
+Content-type: application/json
 
 {
-    "name": "on sale"
+    "name": "Promo"
 }
 
 ###
-PUT http://localhost:3000/tags/2
-Content-Type: application/json
-
-{
-    "name": "promo"
-}
-
-###
-DELETE http://localhost:3000/tags/3
+DELETE http://localhost:3000/tags/11

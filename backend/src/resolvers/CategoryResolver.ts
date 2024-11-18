@@ -9,7 +9,7 @@ export class CategoryResolver {
     async AllCategories() {
         const categories = await Category.find({
             order: {
-                title: "ASC"
+                name: "ASC"
             }
         })
         return categories;
@@ -26,7 +26,7 @@ export class CategoryResolver {
     async createNewCategory(@Arg("data") newCategoryData: CategoryInput) {
         const category = new Category();
 
-        category.title = newCategoryData.title;
+        category.name = newCategoryData.name;
 
         const result = await category.save();
         return result;

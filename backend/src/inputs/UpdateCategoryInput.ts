@@ -7,7 +7,7 @@ class UpdateCategoryInput implements Partial<Category> {
     id: number;
 
     @Field()
-    title: string;
+    name: string;
 }
 
 export default UpdateCategoryInput;

@@ -1,42 +1,40 @@
 GET http://localhost:3000/ads
 
 ###
-GET http://localhost:3000/ads?category=vetement
+GET http://localhost:3000/ads/15
 
 ###
-GET http://localhost:3000/ads?title=bike
+GET http://localhost:3000/ads?category=autre
 
 ###
+GET http://localhost:3000/ads?title=nouvelle
 
-GET http://localhost:3000/ads/2
 ###
+GET http://localhost:3000/categories?name=
 
+###
 POST http://localhost:3000/ads
-Content-Type: application/json
+Content-type: application/json
 
-{
-    "title": "Bike to sell",
-    "description": "description",
-    "owner": "bike.seller@gmail.com",
-    "price": 100,
-    "pictures":
-      [
-        "https://www.edouard.bzh/wp-content/uploads/2020/11/PXL_20201020_174218902-scaled.jpg",
-        "https://www.edouard.bzh/wp-content/uploads/2020/11/elops-single-speed-500-header-1.jpg"
-      ],
-    "location": "Paris",
-    "createdAt": "2023-09-05T10:13:14.755Z",
-    "tags": [{"id":1},{"id":2}]
+  {
+    "title": "Objet test tag 10",
+    "description": "Nouvel objet mysterieux",
+    "owner": "mysterio@gmail.com",
+    "price": 999,
+    "picture":
+      "https://mystere.jpg",
+    "location": "Mystere",
+    "category": 4,
+    "tags": [{"id":3}]
+  }
+  
+###
+PUT http://localhost:3000/ad/58
+Content-type: application/json
+
+  {
+    "picture": "https://medias4.ubaldi.com/visuels/33058/pr_FWM200D12-43.jpg"
   }
 
 ###
-DELETE http://localhost:3000/ads/1
-
-###
-
-PUT http://localhost:3000/ads/10
-Content-Type: application/json
-
-{
-  "title": "Green bike to sell"
-}
+DELETE http://localhost:3000/ads/27

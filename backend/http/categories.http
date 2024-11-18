@@ -1,24 +1,13 @@
+###
 GET http://localhost:3000/categories
 
 ###
-
-GET http://localhost:3000/categories?title=au
+GET http://localhost:3000/category/3
 
 ###
 POST http://localhost:3000/categories
 Content-type: application/json
 
 {
-    "title": "immobilier"
+    "name":"Test cat2"
 }
-
-###
-PUT http://localhost:3000/categories/1
-Content-Type: application/json
-
-{
-    "title": "divers"
-}
-
-###
-DELETE http://localhost:3000/categories/4

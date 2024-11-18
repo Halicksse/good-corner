@@ -1,53 +1,35 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
-export type category = {
-  id: number;
-  title: string;
-};
+import CategoryCard, { CategoryProps } from "./CategoryCard";
+import { Link, useNavigate } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_CATEGORIES } from "../graphql/queries";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([] as category[]);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await axios.get("http://localhost:3000/categories");
-        setCategories(result.data);
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
-    fetchCategories();
-  }, []);
+
+  const { loading, error, data } = useQuery(GET_CATEGORIES)
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
   return (
     <header className="header">
       <div className="main-menu">
         <h1>
-          <Link to="/" className="button logo link-button">
+          <a href="/" className="button logo link-button">
             <span className="mobile-short-label">TGC</span>
             <span className="desktop-long-label">THE GOOD CORNER</span>
-          </Link>
+          </a>
         </h1>
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            // Read the form data
             const form = e.target;
             const formData = new FormData(form as HTMLFormElement);
-
-            // Or you can work with it as a plain object:
             const formJson = Object.fromEntries(formData.entries());
-            console.log(formJson);
-            if (formJson.keyword) {
-              navigate(`/ad/search/${formJson.keyword}`);
-            }
+            console.log(formJson)
+            navigate(`/ad/search/${formJson.keyword}`);
           }}
-          className="text-field-with-button"
-        >
+          className="text-field-with-button">
           <input
             className="text-field main-search-field"
             type="search"
@@ -69,21 +51,16 @@ const Header = () => {
             </svg>
           </button>
         </form>
-        <Link to="/ad/new" className="button link-button">
+
+        <Link className="button link-button" to={`/ad/new`} >
           <span className="mobile-short-label">Publier</span>
           <span className="desktop-long-label">Publier une annonce</span>
-        </Link>
+        </Link >
       </div>
       <nav className="categories-navigation">
-        {categories.map((el) => (
-          <Link
-            key={el.id}
-            to={`/ad/category/${el.title}`}
-            className="category-navigation-link"
-          >
-            {el.title}
-          </Link>
-        ))}
+        {data.AllCategories.map((el: CategoryProps) => {
+          return <CategoryCard key={el.id} id={el.id} name={el.name} />;
+        })}
       </nav>
     </header>
   );
