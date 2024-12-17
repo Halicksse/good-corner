@@ -1,17 +1,13 @@
-import { Query, Resolver } from "type-graphql";
 import { Tag } from "../entities/Tag";
+import { Query, Resolver } from "type-graphql";
 
 @Resolver(Tag)
-export class TagResolver {
-    @Query(() => [Tag])
-    async AllTags() {
-        const tags = await Tag.find({
-            order: {
-                name: "ASC"
-            }
-        })
-        return tags;
-    }
+class TagResolver {
+  @Query(() => [Tag])
+  async getAllTags() {
+    const tags = await Tag.find();
+    return tags;
+  }
 }
 
 export default TagResolver;

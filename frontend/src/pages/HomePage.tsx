@@ -1,7 +1,5 @@
 import RecentAds from "../components/RecentAds";
 
-const HomePage = () => {
-  return <RecentAds />;
-};
+const HomePage = () => <RecentAds />;
 
 export default HomePage;

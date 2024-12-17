@@ -1,11 +1,13 @@
-import { CategoryProps } from "../components/CategoryCard";
 import { Fragment } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
-import { TagProps } from "../components/TagCard";
-import { useAllTagsAndCategoriesQuery, useMutationMutation } from "../generated/graphql-types";
 import { ErrorMessage } from "@hookform/error-message";
+import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
+import {
+  useCreateNewAdMutation,
+  useGetAllCategoriesAndTagsQuery,
+} from "../generated/graphql-types";
+import { GET_ALL_ADS } from "../graphql/queries";
 
 type Inputs = {
   title: string;
@@ -15,15 +17,16 @@ type Inputs = {
   pictures: { url: string }[];
   location: string;
   createdAt: string;
-  category: number;
+  category: string;
   tags: string[];
 };
 
 const NewAdFormPage = () => {
   const navigate = useNavigate();
-
-  const { loading, error, data } = useAllTagsAndCategoriesQuery();
-  const [createAd] = useMutationMutation();
+  const { error, loading, data } = useGetAllCategoriesAndTagsQuery();
+  const [createNewAd] = useCreateNewAdMutation({
+    refetchQueries: [GET_ALL_ADS],
+  });
 
   const {
     register,
@@ -33,7 +36,7 @@ const NewAdFormPage = () => {
   } = useForm<Inputs>({
     criteriaMode: "all",
     defaultValues: {
-      category: 1,
+      category: "1",
       title: "default title",
       description: "default description",
       createdAt: "2023-11-23",
@@ -57,23 +60,21 @@ const NewAdFormPage = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      console.log("data from react hook form", data);
-      const dataForBackend = {
-        ...data,
-        price: parseInt(data.price),
-        createdAt: data.createdAt + "T00:00:00.000Z",
-        tags: data.tags ? data.tags.map((el) => ({ id: parseInt(el) })) : [],
-        category: data.category.toString(),
-      }
-      createAd({
-        variables: { data: dataForBackend },
-      })
-      toast.success("Ad has been added");
-      navigate("/");
-    } catch (err) {
-      console.log("err", err)
-    }
+    console.log("data from react hook form", data);
+    const dataForBackend = {
+      ...data,
+      price: parseInt(data.price),
+      createdAt: data.createdAt + "T00:00:00.000Z",
+      tags: data.tags ? data.tags.map((el) => ({ id: parseInt(el) })) : [],
+    };
+
+    console.log("data for backend", data);
+
+    createNewAd({
+      variables: { data: dataForBackend },
+    });
+    toast.success("Ad has been added");
+    navigate("/");
   };
 
   if (loading) return <p>Loading...</p>;
@@ -302,9 +303,9 @@ const NewAdFormPage = () => {
               Category :
               <br />
               <select {...register("category")}>
-                {data.AllCategories.map((el: CategoryProps) => (
+                {data.getAllCategories.map((el: any) => (
                   <option key={el.id} value={el.id}>
-                    {el.name}
+                    {el.title}
                   </option>
                 ))}
               </select>
@@ -328,7 +329,7 @@ const NewAdFormPage = () => {
           </>
           <br />
           <>
-            {data.AllTags.map((tag: TagProps) => (
+            {data.getAllTags.map((tag) => (
               <label key={tag.id}>
                 <input type="checkbox" value={tag.id} {...register("tags")} />
                 {tag.name}

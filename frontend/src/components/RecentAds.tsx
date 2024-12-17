@@ -1,28 +1,31 @@
-import { useAllAdsQuery } from "../generated/graphql-types";
+import { useGetAllAdsQuery } from "../generated/graphql-types";
 import AdCard from "./AdCard";
 
 const RecentAds = () => {
-  const { loading, error, data } = useAllAdsQuery();
+  const { loading, error, data } = useGetAllAdsQuery();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
-
   if (data) {
     return (
       <>
         <h2>Annonces récentes</h2>
         <section className="recent-ads">
-          {data.AllAds.map((el) => (
-            <div key={el.id}>
-              <AdCard
-                id={el.id}
-                title={el.title}
-                picture={el.pictures[0]?.url}
-                price={el.price}
-                category={el.category}
-              />
-            </div>
-          ))}
+          {data.getAllAds.map((el) => {
+            // console.log("el", el);
+            return (
+              <div key={el.id}>
+                <AdCard
+                  id={el.id}
+                  title={el.title}
+                  picture={el.pictures[0]?.url}
+                  price={el.price}
+                  category={el.category}
+                />
+                <button onClick={() => {}}>Delete</button>
+              </div>
+            );
+          })}
         </section>
       </>
     );

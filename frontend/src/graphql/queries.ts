@@ -1,84 +1,71 @@
 import { gql } from "@apollo/client";
 
-// Ad queries
-export const GET_ADS = gql`
-    query AllAds {
-        AllAds {
-            id
-            title
-            description
-            owner
-            price
-            location
-            createdAt
-            pictures {
-                id
-                url
-            }
-            category {
-                id
-                name
-            }
-            tags {
-                id
-                name
-            }
+export const GET_ALL_CATEGORIES = gql`
+  query GetAllCategories {
+    getAllCategories {
+      id
+      title
     }
-}
+  }
+`;
+
+export const GET_ALL_CATEGORIES_AND_TAGS = gql`
+  query GetAllCategoriesAndTags {
+    getAllCategories {
+      id
+      title
+    }
+    getAllTags {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_ALL_ADS = gql`
+  query GetAllAds($title: String) {
+    getAllAds(title: $title) {
+      id
+      title
+      description
+      owner
+      price
+      location
+      createdAt
+      category {
+        id
+        title
+      }
+      pictures {
+        id
+        url
+      }
+      tags {
+        id
+        name
+      }
+    }
+  }
 `;
 
 export const GET_AD_BY_ID = gql`
-    query GetAdById($getAdByIdId: Float!) {
-        getAdById(id: $getAdByIdId) {
-            id
-            title
-            description
-            owner
-            price
-            pictures {
-                id
-                url
-            }
-            location
-            createdAt
-            category {
-                id
-                name
-            }
-            tags {
-                id
-                name
-            }
-    }
-}
-`;
-
-export const DELETE_AD = gql`
-    mutation DeleteAd($deleteAdId: Float!) {
-        deleteAd(id: $deleteAdId)
-    }
-`;
-
-// Category queries
-export const GET_CATEGORIES = gql`
-  query AllCategories {
-  AllCategories {
-    id
-    name
-  }
-}
-`;
-
-// Tags and Categories
-export const GET_TAGS_AND_CATEGORIES = gql`
-query AllTagsAndCategories {
-    AllTags {
+  query GetAdById($getAdByIdId: Float!) {
+    getAdById(id: $getAdByIdId) {
+      id
+      title
+      description
+      owner
+      price
+      pictures {
         id
-        name
-    }
-    AllCategories {
+        url
+      }
+      location
+      createdAt
+      category {
         id
-        name
+        title
+      }
     }
   }
 `;
